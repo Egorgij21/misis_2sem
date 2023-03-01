@@ -1,0 +1,12 @@
+[
+{
+  "directory": "/Users/egorgij21/Desktop/aparin/build",
+  "command": "/Library/Developer/CommandLineTools/usr/bin/c++  -I/Users/egorgij21/Desktop/aparin/. -g -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX13.0.sdk -std=gnu++20 -o CMakeFiles/rational.doctest.dir/rational.doctest.cpp.o -c /Users/egorgij21/Desktop/aparin/rational.doctest.cpp",
+  "file": "/Users/egorgij21/Desktop/aparin/rational.doctest.cpp"
+},
+{
+  "directory": "/Users/egorgij21/Desktop/aparin/build/rational",
+  "command": "/Library/Developer/CommandLineTools/usr/bin/c++  -I/Users/egorgij21/Desktop/aparin/. -g -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX13.0.sdk -std=gnu++20 -o CMakeFiles/rational.dir/rational.cpp.o -c /Users/egorgij21/Desktop/aparin/rational/rational.cpp",
+  "file": "/Users/egorgij21/Desktop/aparin/rational/rational.cpp"
+}
+]

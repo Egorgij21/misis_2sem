@@ -1,0 +1,6 @@
+/Users/egorgij21/Desktop/aparin/build/CMakeFiles/rational.doctest.dir
+/Users/egorgij21/Desktop/aparin/build/CMakeFiles/edit_cache.dir
+/Users/egorgij21/Desktop/aparin/build/CMakeFiles/rebuild_cache.dir
+/Users/egorgij21/Desktop/aparin/build/rational/CMakeFiles/rational.dir
+/Users/egorgij21/Desktop/aparin/build/rational/CMakeFiles/edit_cache.dir
+/Users/egorgij21/Desktop/aparin/build/rational/CMakeFiles/rebuild_cache.dir
