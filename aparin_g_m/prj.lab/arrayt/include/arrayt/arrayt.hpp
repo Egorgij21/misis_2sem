@@ -1,12 +1,39 @@
-#include <arrayd/arrayd.hpp>
+#pragma once
+
+#pragma once
+
+#ifndef ARRAYT_HPP
+#define ARRAYT_HPP
+
 
 
 #include <iostream>
 
+template <typename T>
+class ArrayT{
+    private:
+        ptrdiff_t size_ = 0;
+        T* data_;
+        int capacity = 0;
+    public:
 
+        ArrayT(const ptrdiff_t& size);
+        ArrayT(const ArrayT& arr);
+        ~ArrayT();
 
+        T& operator[](const ptrdiff_t i);
 
-ArrayD::ArrayD(const std::ptrdiff_t& size) {
+        ptrdiff_t ssize() const;
+
+        void resize(const ptrdiff_t new_size);
+
+        void insert(const ptrdiff_t index, const T value);
+
+        void remove(const ptrdiff_t index);  
+};
+
+template <typename T>
+ArrayT<T>::ArrayT(const std::ptrdiff_t& size) {
     if(size < 0) {
         throw std::invalid_argument("size must be >= 0.");
     }
@@ -24,16 +51,20 @@ ArrayD::ArrayD(const std::ptrdiff_t& size) {
 
 }
 
-ArrayD::ArrayD(const ArrayD& arr) {
+
+template <typename T>
+ArrayT<T>::ArrayT(const ArrayT& arr) {
     *this = arr;
 }
 
-ArrayD::~ArrayD(){
+
+template <typename T>
+ArrayT<T>::~ArrayT(){
     delete[]data_;
 }
 
-
-double& ArrayD::operator[](const std::ptrdiff_t i) {
+template <typename T>
+T& ArrayT<T>::operator[](const std::ptrdiff_t i) {
     
     if(i < 0 || i >= capacity) {
         throw std::out_of_range("index out of range.");
@@ -42,15 +73,18 @@ double& ArrayD::operator[](const std::ptrdiff_t i) {
     return data_[i];
 }
 
-std::ptrdiff_t ArrayD::ssize() const {
+template <typename T>
+std::ptrdiff_t ArrayT<T>::ssize() const {
     return capacity;
 }
 
-void ArrayD::resize(const std::ptrdiff_t new_size) {
+
+template <typename T>
+void ArrayT<T>::resize(const std::ptrdiff_t new_size) {
     if(new_size <= 0) {
         throw std::invalid_argument("size must be > 0.");
     }
-    double* newarr = new double[new_size];
+    T* newarr = new T[new_size];
     for(std::ptrdiff_t i = 0; i < capacity; ++i) {
         newarr[i] = data_[i];
     }
@@ -63,7 +97,9 @@ void ArrayD::resize(const std::ptrdiff_t new_size) {
     delete [] newarr;
 }
 
-void ArrayD::insert(const std::ptrdiff_t index, const double value) {
+
+template <typename T>
+void ArrayT<T>::insert(const std::ptrdiff_t index, const T value) {
     if(index >= 0 && index < capacity) {
         if(value != 0.0) {
             data_[index] = value;
@@ -71,7 +107,7 @@ void ArrayD::insert(const std::ptrdiff_t index, const double value) {
         }
     }
     else if(index == capacity) {
-            double* newarr = new double[index + 1];
+            T* newarr = new T[index + 1];
             for(std::ptrdiff_t i = 0; i < capacity; ++i) {
                 newarr[i] = data_[i];
             }
@@ -89,7 +125,9 @@ void ArrayD::insert(const std::ptrdiff_t index, const double value) {
     }
 }
 
-void ArrayD::remove(const std::ptrdiff_t index) {
+
+template <typename T>
+void ArrayT<T>::remove(const std::ptrdiff_t index) {
     if(index >= 0 && index < capacity) {
         if(0 < data_[index] + 1e-6 && 0 > data_[index] - 1e-6) {
             data_[index] = 0.0;
@@ -105,19 +143,5 @@ void ArrayD::remove(const std::ptrdiff_t index) {
     }
 }
 
-/*
 
-int main() {
-    ArrayD a(5);
-    for(int i = 0; i < a.ssize(); i++) {
-        a.insert(i, i*i);
-    }
-
-    a.insert(5, 25);
-    for(int i = 0; i < a.ssize(); i++) {
-        std::cout << a[i] << '\n';
-    }
-    
-    //std::cout << a.ssize() << '\n';
-}
-*/
+#endif

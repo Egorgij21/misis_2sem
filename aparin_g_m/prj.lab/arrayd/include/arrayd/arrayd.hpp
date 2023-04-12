@@ -18,7 +18,7 @@ public:
 
 public:
 
-    ArrayD(const ptrdiff_t& size = 0);
+    ArrayD(const ptrdiff_t& size);
     ArrayD(const ArrayD& arr);
     ~ArrayD();
 
