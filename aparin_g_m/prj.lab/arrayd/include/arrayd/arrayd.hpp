@@ -24,6 +24,7 @@ public:
 
 
     double& operator[](const ptrdiff_t i);
+    ArrayD& operator=(const ArrayD& arr);
 
     ptrdiff_t ssize() const;
 

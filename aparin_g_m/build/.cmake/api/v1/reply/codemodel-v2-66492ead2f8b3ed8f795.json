@@ -1,0 +1,189 @@
+{
+	"configurations" : 
+	[
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"childIndexes" : 
+					[
+						1,
+						5
+					],
+					"hasInstallRule" : true,
+					"jsonFile" : "directory-.-Debug-f5ebdc15457944623624.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.18"
+					},
+					"projectIndex" : 0,
+					"source" : "."
+				},
+				{
+					"build" : "prj.lab",
+					"childIndexes" : 
+					[
+						2,
+						3,
+						4
+					],
+					"hasInstallRule" : true,
+					"jsonFile" : "directory-prj.lab-Debug-6b850684795bf15e457d.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.18"
+					},
+					"parentIndex" : 0,
+					"projectIndex" : 0,
+					"source" : "prj.lab"
+				},
+				{
+					"build" : "prj.lab/rational",
+					"hasInstallRule" : true,
+					"jsonFile" : "directory-prj.lab.rational-Debug-cdc4f2c8900390716614.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.18"
+					},
+					"parentIndex" : 1,
+					"projectIndex" : 0,
+					"source" : "prj.lab/rational",
+					"targetIndexes" : 
+					[
+						4
+					]
+				},
+				{
+					"build" : "prj.lab/arrayd",
+					"hasInstallRule" : true,
+					"jsonFile" : "directory-prj.lab.arrayd-Debug-b0f9ebd15531cf5655ff.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.18"
+					},
+					"parentIndex" : 1,
+					"projectIndex" : 0,
+					"source" : "prj.lab/arrayd",
+					"targetIndexes" : 
+					[
+						0
+					]
+				},
+				{
+					"build" : "prj.lab/arrayt",
+					"jsonFile" : "directory-prj.lab.arrayt-Debug-ab7996857bb26be7e411.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.18"
+					},
+					"parentIndex" : 1,
+					"projectIndex" : 0,
+					"source" : "prj.lab/arrayt",
+					"targetIndexes" : 
+					[
+						2
+					]
+				},
+				{
+					"build" : "prj.test",
+					"jsonFile" : "directory-prj.test-Debug-5c21977a58eb6220d410.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.18"
+					},
+					"parentIndex" : 0,
+					"projectIndex" : 0,
+					"source" : "prj.test",
+					"targetIndexes" : 
+					[
+						1,
+						3,
+						5
+					]
+				}
+			],
+			"name" : "Debug",
+			"projects" : 
+			[
+				{
+					"directoryIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3,
+						4,
+						5
+					],
+					"name" : "cpp2023_test",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3,
+						4,
+						5
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 3,
+					"id" : "arrayd::@813ce7461222d12939a6",
+					"jsonFile" : "target-arrayd-Debug-48dac837f20f4c713f71.json",
+					"name" : "arrayd",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 5,
+					"id" : "arrayd_test::@03e42033715ba8c02d37",
+					"jsonFile" : "target-arrayd_test-Debug-86cb8159743b76f7e937.json",
+					"name" : "arrayd_test",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 4,
+					"id" : "arrayt::@f46ef174623fff68cc07",
+					"jsonFile" : "target-arrayt-Debug-97739a1ed8b37bff8cdb.json",
+					"name" : "arrayt",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 5,
+					"id" : "arrayt_test::@03e42033715ba8c02d37",
+					"jsonFile" : "target-arrayt_test-Debug-491b77a1f5ab3f5159cf.json",
+					"name" : "arrayt_test",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 2,
+					"id" : "rational::@fd4f4962d1a8e6d13fee",
+					"jsonFile" : "target-rational-Debug-527d2600475ef3e2369f.json",
+					"name" : "rational",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 5,
+					"id" : "rational_test::@03e42033715ba8c02d37",
+					"jsonFile" : "target-rational_test-Debug-7c535ee6e86cb403537f.json",
+					"name" : "rational_test",
+					"projectIndex" : 0
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "/Users/egorgij21/Desktop/aparin_g_m/build",
+		"source" : "/Users/egorgij21/Desktop/aparin_g_m"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 4
+	}
+}

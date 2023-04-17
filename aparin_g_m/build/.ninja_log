@@ -1,0 +1,12 @@
+# ninja log v5
+2	2068	1681290959342267157	prj.test/CMakeFiles/rational_test.dir/rational_test.cpp.o	80296436f4d9cf44
+2	899	1681290958172801258	prj.lab/arrayd/CMakeFiles/arrayd.dir/arrayd.cpp.o	82de94e0a894cee7
+929	1009	1681290958290156000	prj.lab/rational/librational.a	f2dcf91236e7e484
+3	2064	1681290959339046203	prj.test/CMakeFiles/arrayd_test.dir/arrayd_test.cpp.o	81b6055fbc4f8c62
+903	988	1681290958269759000	prj.lab/arrayd/libarrayd.a	6748c0bc160ca32e
+2	928	1681290958203179935	prj.lab/rational/CMakeFiles/rational.dir/rational.cpp.o	9c4482d989b3331c
+3	101	1681290980244055627	build.ninja	7eccdb306c767974
+5	77	1681290980333051799	/Users/egorgij21/Desktop/aparin_g_m/bin.dbg/rational_test	9a49edbb0db97cdf
+6	77	1681290980333052174	/Users/egorgij21/Desktop/aparin_g_m/bin.dbg/arrayd_test	9e6b3ccf1fe91827
+6	1322	1681290981573056495	prj.test/CMakeFiles/arrayt_test.dir/arrayt_test.cpp.o	a39e59ca2832c2b2
+1322	1382	1681290981639332908	/Users/egorgij21/Desktop/aparin_g_m/bin.dbg/arrayt_test	bdeb8cd275baac4

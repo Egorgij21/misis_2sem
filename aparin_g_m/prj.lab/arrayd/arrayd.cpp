@@ -42,6 +42,11 @@ double& ArrayD::operator[](const std::ptrdiff_t i) {
     return data_[i];
 }
 
+ArrayD& ArrayD::operator=(const ArrayD& arr) {
+    ArrayD(arr);
+}
+
+
 std::ptrdiff_t ArrayD::ssize() const {
     return capacity;
 }
@@ -104,20 +109,3 @@ void ArrayD::remove(const std::ptrdiff_t index) {
         throw std::out_of_range("index out of range.");
     }
 }
-
-/*
-
-int main() {
-    ArrayD a(5);
-    for(int i = 0; i < a.ssize(); i++) {
-        a.insert(i, i*i);
-    }
-
-    a.insert(5, 25);
-    for(int i = 0; i < a.ssize(); i++) {
-        std::cout << a[i] << '\n';
-    }
-    
-    //std::cout << a.ssize() << '\n';
-}
-*/
