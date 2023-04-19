@@ -1,6 +1,5 @@
 #pragma once
 
-#pragma once
 
 #ifndef RATIONAL_HPP
 #define RATIONAL_HPP
@@ -13,19 +12,22 @@
 
 class Rational{
 
-int32_t num = 0;
-int32_t denum = 1;
+int32_t num_ = 0;
+int32_t denom_ = 1;
+static const char separator = '/' ;
 
 public:
     Rational();
-    Rational(const int32_t);
-    Rational(const int32_t num, const int32_t denum);
+    Rational(const int32_t) noexcept;
+    Rational(const Rational&) = default;
+    Rational(Rational&&) = default;
+    Rational(const int32_t num_, const int32_t denum);
     ~Rational() = default;
 
 
 
-    std::ostream& writeTo(std::ostream&) const;
-	std::istream& readFrom(std::istream&);
+    std::ostream& WriteTo(std::ostream&) const noexcept;
+	std::istream& ReadFrom(std::istream&);
 
 
 
@@ -41,7 +43,6 @@ public:
     Rational operator/(const Rational&) const;
     Rational operator++();
     Rational operator++(int);
-
 	Rational operator--();
     Rational operator--(int);
 
@@ -64,9 +65,9 @@ public:
 
 
     double toDouble() const;
-private:
-    void reduce();
-    int32_t gcd(int32_t num, int32_t denum) const;
+public:
+    void redusing();
+    int32_t gcd(int32_t num_, int32_t denum_) const;
     Rational normalize(Rational&) const;
 };
 

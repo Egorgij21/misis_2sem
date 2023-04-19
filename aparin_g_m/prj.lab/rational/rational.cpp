@@ -5,13 +5,13 @@
 
 
 Rational::Rational() { 
-    num = 0;
-    denum = 1;
+    num_ = 0;
+    denom_ = 1;
 }
 
 Rational::Rational(const int32_t value) {
-    num = value;
-    denum = 1;
+    num_ = value;
+    denom_ = 1;
 }
 
 
@@ -23,59 +23,59 @@ Rational::Rational(int32_t numIn, int32_t denumIn) {
         numIn *= -1;
         denumIn *= -1;
     }
-    num = numIn;
-    denum = denumIn;
-    reduce();
+    num_ = numIn;
+    denom_ = denumIn;
+    redusing();
 }
 
 Rational& Rational::operator=(const Rational& rhs) {
-    num = rhs.num;
-    denum = rhs.denum;
+    num_ = rhs.num_;
+    denom_ = rhs.denom_;
     return *this;
 }
 
 Rational& Rational::operator=(const int32_t& value) {
-    num = value;
-    denum = 1;
+    num_ = value;
+    denom_ = 1;
     return *this;
 }
 
 Rational Rational::operator+(const Rational& rhs) const {
-    if ((num * rhs.denum + rhs.num * denum) == 0) {
+    if ((num_ * rhs.denom_ + rhs.num_ * denom_) == 0) {
         Rational r(0, 1);
         return r;
     }
-    Rational r(num * rhs.denum + rhs.num * denum, rhs.denum * denum);
+    Rational r(num_ * rhs.denom_ + rhs.num_ * denom_, rhs.denom_ * denom_);
     return normalize(r);
 }
 
 
 Rational Rational::operator-(const Rational& rhs) const {
-    if ((num * rhs.denum - rhs.num * denum) == 0) {
+    if ((num_ * rhs.denom_ - rhs.num_ * denom_) == 0) {
         Rational r(0, 1);
         return r;
     }
-    Rational r(num * rhs.denum - rhs.num * denum, rhs.denum * denum);
+    Rational r(num_ * rhs.denom_ - rhs.num_ * denom_, rhs.denom_ * denom_);
     return normalize(r);
 }
 Rational Rational::operator-() const {
-    Rational r(-num, denum);
+    Rational r(-num_, denom_);
     return r;
 }
 Rational Rational::operator*(const Rational& rhs) const {
-    if (num * rhs.num == 0) {
+    if (num_ * rhs.num_ == 0) {
         Rational r(0, 1);
         return r;
     }
-    Rational r(num * rhs.num, denum * rhs.denum);
+    Rational r(num_ * rhs.num_, denom_ * rhs.denom_);
     return normalize(r);
 }
 Rational Rational::operator/(const Rational& rhs) const {
-    if (num * rhs.denum == 0) {
+    if (num_ * rhs.denom_ == 0) {
         Rational r(0, 1);
         return r;
     }
-    Rational r(num * rhs.denum, denum * rhs.num);
+    Rational r(num_ * rhs.denom_, denom_ * rhs.num_);
     return normalize(r);
 }
 Rational Rational::operator++() { // ++x
@@ -122,10 +122,10 @@ Rational& Rational::operator/=(const Rational& rhs) {
 
 
 bool Rational::operator<(const Rational& rhs) const {
-    return num * rhs.denum < rhs.num * denum;
+    return num_ * rhs.denom_ < rhs.num_ * denom_;
 }
 bool Rational::operator>(const Rational& rhs) const {
-    return num * rhs.denum > rhs.num * denum;
+    return num_ * rhs.denom_ > rhs.num_ * denom_;
 }
 bool Rational::operator<=(const Rational& rhs) const {
     return !(*this > rhs);
@@ -134,7 +134,7 @@ bool Rational::operator>=(const Rational& rhs) const {
     return !(*this < rhs);
 }
 bool Rational::operator==(const Rational& rhs) const {
-    return num == rhs.num && denum == rhs.denum;
+    return num_ == rhs.num_ && denom_ == rhs.denom_;
 }
 bool Rational::operator!=(const Rational& rhs) const {
     return !(*this == rhs);
@@ -142,7 +142,7 @@ bool Rational::operator!=(const Rational& rhs) const {
 
 
 double Rational::toDouble() const {
-    return num / (double)denum;
+    return num_ / (double)denom_;
 }
 
 Rational pow(Rational tmp) {
@@ -150,62 +150,99 @@ Rational pow(Rational tmp) {
     return temp;
 }
 
-void Rational::reduce() {
-    if (num < 0) {
-        int32_t g = gcd(-num, denum);
+void Rational::redusing() {
+    if (num_ < 0) {
+        int32_t g = gcd(-num_, denom_);
     }
     else {
-        int32_t g = gcd(num, denum);
+        int32_t g = gcd(num_, denom_);
     }
 }
 
-int32_t Rational::gcd(int32_t num, int32_t denum) const {
-    if (num < denum) {
-        std::swap(num, denum);
+int32_t Rational::gcd(int32_t num_, int32_t denom_) const {
+    if (num_ < denom_) {
+        std::swap(num_, denom_);
     }
-    num %= denum;
-    if (num == 0) {
-        return denum;
+    num_ %= denom_;
+    if (num_ == 0) {
+        return denom_;
     }
     else {
-        return gcd(num, denum);
+        return gcd(num_, denom_);
     }
 }
 
 
 Rational Rational::normalize(Rational& rhs) const {
     int32_t a, b;
-    a = std::abs(rhs.num); 
-    b = std::abs(rhs.denum);
+    a = std::abs(rhs.num_); 
+    b = std::abs(rhs.denom_);
     while(b){
         a %= b;
         std::swap(a, b);
     }
-    return Rational(rhs.num / a, rhs.denum / a);
+    return Rational(rhs.num_ / a, rhs.denom_ / a);
 }
 
 
 
-std::ostream& Rational::writeTo(std::ostream& ostrm) const {
-	ostrm << num << "/" << denum;
-	return ostrm;
+std::ostream& Rational::WriteTo(std::ostream& ostrm) const noexcept {
+    ostrm << num_ << separator << denom_;
+    return ostrm;
 }
 
-std::istream& Rational::readFrom(std::istream& istrm) {
-	int32_t tmp_num(0), tmp_denum(0);
-	char symb(0);
-	std::cin >> tmp_num >> symb >> tmp_denum;
-	if(istrm.good()){
-		if (symb == '/'){
-			num = tmp_num;
-			denum = tmp_denum;
-            if (num != 0) {
-			    gcd(num, denum);
-            }
-		}
-		else{
-			istrm.setstate(std::ios_base::failbit);
-		}
-	}
-	return istrm;
+std::istream& Rational::ReadFrom(std::istream& istrm)
+{
+    char sym('-');
+    while (std::isspace(istrm.peek())) {
+        sym = istrm.get();
+    }
+    int32_t numInp_(0);
+    int32_t denomInp_(0);
+    sym = '-' ;
+    bool isNeg(false);
+    if (istrm.peek() == '-') {
+        isNeg = true;
+        sym = istrm.get();
+    }
+
+    while (std::isdigit(istrm.peek())) {
+        sym = istrm.get();
+        numInp_ *= 10;
+        numInp_ += static_cast<int>(sym - '0');
+    }
+    if (sym == '-') {
+        istrm.setstate(std::ios_base::failbit);
+        return istrm;
+    }
+
+    if (istrm.peek() != '/') {
+        istrm.setstate(std::ios_base::failbit);
+        return istrm;
+    }
+    sym = istrm.get();
+
+    while (std::isdigit(istrm.peek())) {
+        sym = istrm.get();
+        denomInp_ *= 10;
+        denomInp_ += static_cast<int>(sym - '0');
+    }
+    if (sym == '/') {
+        istrm.setstate(std::ios_base::failbit);
+        return istrm;
+    }
+    
+    if (istrm.good() || istrm.eof()) {
+        if (denomInp_ == 0) {
+            istrm.setstate(std::ios_base::failbit);
+            return istrm;
+        }
+        num_ = numInp_;
+        denom_ = denomInp_;
+        if (isNeg) {
+            num_ *= -1;
+        }
+        redusing();
+    }
+    return istrm;
 }

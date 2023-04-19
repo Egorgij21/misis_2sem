@@ -1,6 +1,5 @@
 #pragma once
 
-#pragma once
 
 #ifndef ARRAYD_HPP
 #define ARRAYD_HPP
@@ -12,27 +11,27 @@
 
 class ArrayD{
 public:
-    ptrdiff_t size_ = 0;
+    std::ptrdiff_t size_ = 0;
     double* data_;
     int capacity = 0;
 
 public:
-
-    ArrayD(const ptrdiff_t& size);
-    ArrayD(const ArrayD& arr);
+    ArrayD();
+    explicit ArrayD(const std::ptrdiff_t& size);
+    ArrayD(const ArrayD&);
     ~ArrayD();
 
+    std::ptrdiff_t ssize() const noexcept;
 
-    double& operator[](const ptrdiff_t i);
+    double& operator[](const std::ptrdiff_t i);
+    const double& operator[](const std::ptrdiff_t i) const;
     ArrayD& operator=(const ArrayD& arr);
 
-    ptrdiff_t ssize() const;
+    void resize(const std::ptrdiff_t new_size);
 
-    void resize(const ptrdiff_t new_size);
+    void insert(const std::ptrdiff_t, const double value);
 
-    void insert(const ptrdiff_t index, const double value);
-
-    void remove(const ptrdiff_t index);
+    void remove(const std::ptrdiff_t);
 };
 
 #endif
