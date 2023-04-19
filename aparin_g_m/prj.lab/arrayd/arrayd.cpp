@@ -114,7 +114,6 @@ void ArrayD::resize(const std::ptrdiff_t new_size) {
         }
     }
     size_ = new_size;
-    
 }
 
 void ArrayD::insert(const std::ptrdiff_t index, const double value) {
