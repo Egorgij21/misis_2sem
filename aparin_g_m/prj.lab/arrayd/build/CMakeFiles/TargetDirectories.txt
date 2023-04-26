@@ -1,7 +1,0 @@
-/Users/egorgij21/Desktop/aparin_g_m/prj.lab/arrayd/build/CMakeFiles/arrayd.dir
-/Users/egorgij21/Desktop/aparin_g_m/prj.lab/arrayd/build/CMakeFiles/edit_cache.dir
-/Users/egorgij21/Desktop/aparin_g_m/prj.lab/arrayd/build/CMakeFiles/rebuild_cache.dir
-/Users/egorgij21/Desktop/aparin_g_m/prj.lab/arrayd/build/CMakeFiles/list_install_components.dir
-/Users/egorgij21/Desktop/aparin_g_m/prj.lab/arrayd/build/CMakeFiles/install.dir
-/Users/egorgij21/Desktop/aparin_g_m/prj.lab/arrayd/build/CMakeFiles/install/local.dir
-/Users/egorgij21/Desktop/aparin_g_m/prj.lab/arrayd/build/CMakeFiles/install/strip.dir
