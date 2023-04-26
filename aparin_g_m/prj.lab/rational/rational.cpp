@@ -9,7 +9,7 @@ Rational::Rational() {
     denom_ = 1;
 }
 
-Rational::Rational(const int32_t value) {
+Rational::Rational(const int32_t value) noexcept{
     num_ = value;
     denom_ = 1;
 }
@@ -34,11 +34,6 @@ Rational& Rational::operator=(const Rational& rhs) {
     return *this;
 }
 
-Rational& Rational::operator=(const int32_t& value) {
-    num_ = value;
-    denom_ = 1;
-    return *this;
-}
 
 Rational Rational::operator+(const Rational& rhs) const {
     if ((num_ * rhs.denom_ + rhs.num_ * denom_) == 0) {
@@ -49,6 +44,9 @@ Rational Rational::operator+(const Rational& rhs) const {
     return normalize(r);
 }
 
+Rational Rational::operator+() const {
+    return *this;
+}
 
 Rational Rational::operator-(const Rational& rhs) const {
     if ((num_ * rhs.denom_ - rhs.num_ * denom_) == 0) {

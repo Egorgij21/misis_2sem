@@ -11,6 +11,7 @@
 
 
 class Rational{
+public:
 
 int32_t num_ = 0;
 int32_t denom_ = 1;
@@ -32,11 +33,10 @@ public:
 
 
     Rational& operator=(const Rational&);
-    Rational& operator=(const int32_t&);
-
 
 
     Rational operator+(const Rational&) const;
+    Rational operator+() const;
     Rational operator-(const Rational&) const;
     Rational operator-() const;
     Rational operator*(const Rational&) const;
@@ -65,7 +65,7 @@ public:
 
 
     double toDouble() const;
-public:
+private:
     void redusing();
     int32_t gcd(int32_t num_, int32_t denum_) const;
     Rational normalize(Rational&) const;

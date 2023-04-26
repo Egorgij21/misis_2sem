@@ -7,6 +7,7 @@
 
 
 #include<iosfwd>
+#include <cstddef>
 
 
 class ArrayD{
