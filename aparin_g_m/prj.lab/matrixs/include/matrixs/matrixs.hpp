@@ -31,6 +31,9 @@ public:
     [[nodiscard]] std::ptrdiff_t nRows() const noexcept;
     [[nodiscard]] std::ptrdiff_t nCols() const noexcept;
 
+    void resize(const SizeType& s);
+    void resize(const std::ptrdiff_t row, const std::ptrdiff_t col);
+
     [[nodiscard]] SizeType ssize() const noexcept;
 
     MatrixS& operator=(const MatrixS&);
@@ -41,7 +44,6 @@ public:
 
 
 };
-
 
 
 

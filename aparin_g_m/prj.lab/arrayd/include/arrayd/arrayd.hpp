@@ -5,7 +5,6 @@
 #define ARRAYD_HPP
 
 
-
 #include<iosfwd>
 #include <cstddef>
 
