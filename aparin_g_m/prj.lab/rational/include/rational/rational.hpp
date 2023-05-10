@@ -22,7 +22,7 @@ public:
     Rational(const int32_t) noexcept;
     Rational(const Rational&) = default;
     Rational(Rational&&) = default;
-    Rational(const int32_t num_, const int32_t denum);
+    Rational(const int32_t num_input, const int32_t denom_input);
     ~Rational() = default;
 
 
@@ -41,19 +41,19 @@ public:
     Rational operator-() const;
     Rational operator*(const Rational&) const;
     Rational operator/(const Rational&) const;
+
+
     Rational operator++();
     Rational operator++(int);
 	Rational operator--();
     Rational operator--(int);
 
 
-
-
     Rational& operator+=(const Rational&);
     Rational& operator-=(const Rational&);
     Rational& operator*=(const Rational&);
     Rational& operator/=(const Rational&);
-
+    Rational& operator%=(const Rational&);
 
 
     bool operator<(const Rational&) const;
@@ -67,7 +67,7 @@ public:
     double toDouble() const;
 private:
     void redusing();
-    int32_t gcd(int32_t num_, int32_t denum_) const;
+    int32_t gcd(int32_t num, int32_t denom) const;
     Rational normalize(Rational&) const;
 };
 

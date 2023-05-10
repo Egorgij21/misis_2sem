@@ -115,6 +115,14 @@ Rational& Rational::operator/=(const Rational& rhs) {
     *this = *this / rhs;
     return *this;
 }
+Rational& Rational::operator%=(const Rational& rhs) {
+    int32_t mult = rhs.denom_ / gcd(denom_, rhs.denom_);
+    num_ *= mult;
+    denom_ *= mult;
+    num_ %= denom_ / rhs.denom_ * rhs.num_;
+    redusing();
+    return *this;
+}
 
 
 
