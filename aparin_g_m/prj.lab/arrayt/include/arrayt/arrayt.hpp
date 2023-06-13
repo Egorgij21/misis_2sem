@@ -9,59 +9,62 @@
 
 template <typename T>
 class ArrayT{
-    public:
-        std::ptrdiff_t size_ = 0;
-        T* data_;
-        int capacity = 0;
-    public:
-        ArrayT();
-        explicit ArrayT(const ptrdiff_t size);
-        ArrayT(const ArrayT<T>&);
-        ~ArrayT();
+public:
+    std::ptrdiff_t size_;
+    std::ptrdiff_t capacity_;
+    T* data_;
+    static const char separator = ',';
+public:
+    ArrayT();
+    explicit ArrayT(const std::ptrdiff_t len);
+    ArrayT(const ArrayT<T>&);
+    ArrayT(std::ptrdiff_t sizeInp, T number);
+    ~ArrayT();
 
-        T& operator[](std::ptrdiff_t i);
-        const T& operator[](std::ptrdiff_t i) const;
-        ArrayT<T>& operator=(const ArrayT<T>& arr);
+    T& operator[](std::ptrdiff_t i);
+    const T& operator[](std::ptrdiff_t i) const;
 
-        std::ptrdiff_t ssize() const;
+    ArrayT<T>& operator=(const ArrayT<T>& arr);
 
-        void resize(const ptrdiff_t new_size);
+    std::ptrdiff_t ssize() const;
 
-        void insert(const ptrdiff_t, T value);
+    void reserve(std::ptrdiff_t new_capacity);
+    void resize(const std::ptrdiff_t new_size);
 
-        void remove(const ptrdiff_t);  
+    void insert(const std::ptrdiff_t, T value);
+
+    void remove(const std::ptrdiff_t);  
+
+    std::ostream& writeTo(std::ostream& ostrm) const;
 };
 
 template<typename T>
 ArrayT<T>::ArrayT() {
     data_ = nullptr;
     size_ = 0;
-    capacity = 0;
+    capacity_ = 0;
 }
 
-template <typename T>
-ArrayT<T>::ArrayT(const std::ptrdiff_t size) {
-    if(size < 0) {
-        throw std::invalid_argument("size must be >= 0.");
+template<typename T>
+ArrayT<T>::ArrayT(std::ptrdiff_t size) {
+    if (size < 0) {
+        throw std::out_of_range("Index out of range");
     }
-    else {
-        capacity = size;
-        size_ = 0;
-        data_ = new T[capacity];
-        for(std::ptrdiff_t i = 0; i < capacity; i++) {
-            data_[i] = 0.0;
-        }
+    size_ = size;
+    capacity_ = size;
+    data_ = new T[capacity_];
+    for (std::ptrdiff_t i = 0; i < ssize(); ++i) {
+        data_[i] = 0;
     }
-
 }
 
 
-template <typename T>
-ArrayT<T>::ArrayT(const ArrayT& arr) {
+template<typename T>
+ArrayT<T>::ArrayT(const ArrayT<T>& arr) : ssize_(arr.size_), capacity_(arr.capacity_), data_(nullptr) {
     if (this == &arr) {
         return;
     }
-    data_ = new T[capacity];
+    data_ = new T[capacity_];
     if (arr.data_ == nullptr) {
         data_ = nullptr;
     }
@@ -73,38 +76,7 @@ ArrayT<T>::ArrayT(const ArrayT& arr) {
 
 template <typename T>
 ArrayT<T>::~ArrayT(){
-    delete[]data_;
-}
-
-template <typename T>
-T& ArrayT<T>::operator[](const std::ptrdiff_t i) {
-    if(i < 0 || i >= ssize()) {
-        throw std::out_of_range("index out of range.");
-    }
-    return data_[i];
-}
-
-template<typename T>
-const T& ArrayT<T>::operator[](std::ptrdiff_t i) const {
-    if(i < 0 || i >= ssize()) {
-        throw std::out_of_range("index out of range.");
-    }
-    return data_[i];
-}
-
-template<typename T>
-ArrayT<T>& ArrayT<T>::operator=(const ArrayT<T>& arr) {
-    if (this == &arr) {
-        return *this;
-    }
-    size_ = arr.size_;
-    capacity = arr.capacity;
     delete[] data_;
-    data_ = new T[capacity];
-    for (std::ptrdiff_t i = 0; i < ssize(); ++i) {
-        new (data_ + i) T(arr.data_[i]);
-    }
-    return *this;
 }
 
 template <typename T>
@@ -112,30 +84,66 @@ std::ptrdiff_t ArrayT<T>::ssize() const {
     return size_;
 }
 
-
-template <typename T>
-void ArrayT<T>::resize(std::ptrdiff_t new_size) {
-    if(new_size <= 0) {
-        throw std::invalid_argument("size must be > 0.");
+template<typename T>
+T& ArrayT<T>::operator[](std::ptrdiff_t index) {
+    if (index < 0 || index >= ssize()) {
+        throw std::out_of_range("Index out of range");
     }
-    if (new_size > capacity) {
-        capacity = new_size;
-        if (capacity < ssize()) {
-            size_ = capacity;
-            return;
-        }
-        double* newData_ = new T[capacity];
-        if (data_ == nullptr) {
-            data_ = nullptr;
-        }
-        else {
-            std::copy(data_, data_ + ssize(), newData_);
-        }
-        for (std::ptrdiff_t i = ssize(); i < capacity; ++i) {
-            newData_[i] = 0;
-        }
-        delete[] data_;
-        data_ = newData_;
+    return data_[index];
+}
+
+template<typename T>
+const T& ArrayT<T>::operator[](std::ptrdiff_t index) const {
+    if (index < 0 || index >= ssize()) {
+        throw std::out_of_range("Index out of range");
+    }
+    return data_[index];
+}
+
+template<typename T>
+ArrayT<T>& ArrayT<T>::operator=(const ArrayT<T>& rhs) {
+    if (this == &rhs) {
+        return *this;
+    }
+    size_ = rhs.size_;
+    capacity_ = rhs.capacity_;
+    delete[] data_;
+    data_ = new T[capacity_];
+    for (std::ptrdiff_t i = 0; i < ssize(); ++i) {
+        new (data_ + i) T(rhs.data_[i]);
+    }
+    return *this;
+}
+
+template<typename T>
+void ArrayT<T>::reserve(std::ptrdiff_t new_capacity) {
+    capacity_ = new_capacity;
+    if (capacity_ < ssize()) {
+        size_ = capacity_;
+        return;
+    }
+    T* newMemory_ = new T[capacity_];
+    if (data_ == nullptr) {
+        data_ = nullptr;
+    }
+    else {
+        std::copy(data_, data_ + ssize(), newMemory_);
+    }
+    for (std::ptrdiff_t i = ssize(); i < capacity_; ++i) {
+        newMemory_[i] = 0;
+    }
+    delete[] data_;
+    data_ = newMemory_;
+}
+
+
+template<typename T>
+void ArrayT<T>::resize(std::ptrdiff_t new_size) {
+    if (new_size <= 0) {
+        throw std::invalid_argument("Expected positive");
+    }
+    if (new_size > capacity_) {
+        reserve(new_size);
     }
     if (new_size > ssize()) {
         for (std::ptrdiff_t i = ssize(); i < new_size; ++i) {
@@ -146,30 +154,29 @@ void ArrayT<T>::resize(std::ptrdiff_t new_size) {
 }
 
 
-template <typename T>
-void ArrayT<T>::insert(std::ptrdiff_t index, T value) {
-    if(index < 0 || index > ssize()) {
-        throw std::invalid_argument("index must be <= size and >= 0.");
+template<typename T>
+void ArrayT<T>::insert(std::ptrdiff_t index, T num) {
+    if (index < 0 || index > ssize()) {
+        throw std::out_of_range("Wrong position");
     }
     resize(ssize() + 1);
     for (std::ptrdiff_t i = ssize() - 1; i > index; --i) {
         data_[i] = data_[i - 1];
     }
-    data_[index] = value;
+    data_[index] = num;
 }
 
 
-template <typename T>
-void ArrayT<T>::remove(const std::ptrdiff_t index) {
-    if(index >= 0 && index < ssize()) {
-        for (std::ptrdiff_t i = index + 1; i < ssize(); ++i) {
-            data_[i - 1] = data_[i];
-        }
-        resize(ssize() - 1);       
+template<typename T>
+void ArrayT<T>::remove(std::ptrdiff_t index)
+{
+    if (index < 0 || index >= ssize()) {
+        throw std::out_of_range("Wrong position");
     }
-    else {
-        throw std::out_of_range("index out of range.");
+    for (std::ptrdiff_t i = index + 1; i < ssize(); ++i) {
+        data_[i - 1] = data_[i];
     }
+    resize(ssize() - 1);
 }
 
 

@@ -1,30 +1,24 @@
 #include <rational/rational.hpp>
-
 #include <iostream>
 
-
-
-Rational::Rational() { 
+Rational::Rational() {
     num_ = 0;
     denom_ = 1;
 }
-
-Rational::Rational(const int32_t value) noexcept{
-    num_ = value;
+Rational::Rational(int32_t numInp_) noexcept{
+    num_ = numInp_;
     denom_ = 1;
 }
-
-
-Rational::Rational(int32_t numIn, int32_t denumIn) {
-    if (denumIn == 0) {
-        throw std::invalid_argument("Divide by zero exeption");
+Rational::Rational(int32_t numInp_, int32_t denomInp_) {
+    if (denomInp_ < 0) {
+        denomInp_ *= -1;
+        numInp_ *= -1;
     }
-    if (denumIn < 0) {
-        numIn *= -1;
-        denumIn *= -1;
+    if (denomInp_ == 0) {
+        throw std::invalid_argument("Divide by zero exception");
     }
-    num_ = numIn;
-    denom_ = denumIn;
+    num_ = numInp_;
+    denom_ = denomInp_;
     redusing();
 }
 
@@ -33,88 +27,57 @@ Rational& Rational::operator=(const Rational& rhs) {
     denom_ = rhs.denom_;
     return *this;
 }
-
-
-Rational Rational::operator+(const Rational& rhs) const {
-    if ((num_ * rhs.denom_ + rhs.num_ * denom_) == 0) {
-        Rational r(0, 1);
-        return r;
-    }
-    Rational r(num_ * rhs.denom_ + rhs.num_ * denom_, rhs.denom_ * denom_);
-    return normalize(r);
-}
-
-Rational Rational::operator+() const {
-    return *this;
-}
-
-Rational Rational::operator-(const Rational& rhs) const {
-    if ((num_ * rhs.denom_ - rhs.num_ * denom_) == 0) {
-        Rational r(0, 1);
-        return r;
-    }
-    Rational r(num_ * rhs.denom_ - rhs.num_ * denom_, rhs.denom_ * denom_);
-    return normalize(r);
-}
-Rational Rational::operator-() const {
-    Rational r(-num_, denom_);
-    return r;
-}
-Rational Rational::operator*(const Rational& rhs) const {
-    if (num_ * rhs.num_ == 0) {
-        Rational r(0, 1);
-        return r;
-    }
-    Rational r(num_ * rhs.num_, denom_ * rhs.denom_);
-    return normalize(r);
-}
-Rational Rational::operator/(const Rational& rhs) const {
-    if (num_ * rhs.denom_ == 0) {
-        Rational r(0, 1);
-        return r;
-    }
-    Rational r(num_ * rhs.denom_, denom_ * rhs.num_);
-    return normalize(r);
-}
-Rational Rational::operator++() { // ++x
-    *this = *this + 1;
-    return *this;
-}
-Rational Rational::operator++(int) { // x++
-    Rational copy = *this;
-    *this = *this + 1;
-    return copy;
-}
-
-Rational Rational::operator--() {
-    *this = *this - 1;
-    return *this;
-}
-Rational Rational::operator--(int) {
-    Rational copy = *this;
-    *this = *this - 1;
-    return copy;
-}
-
-
-
-
 Rational& Rational::operator+=(const Rational& rhs) {
-    *this = *this + rhs;
+    int32_t mult = rhs.denom_ / gcd(denom_, rhs.denom_);
+    num_ *= mult;
+    denom_ *= mult;
+    num_ += denom_ / rhs.denom_ * rhs.num_;
+    redusing();
     return *this;
 }
 Rational& Rational::operator-=(const Rational& rhs) {
-    *this = *this - rhs;
+    int32_t mult = rhs.denom_ / gcd(denom_, rhs.denom_);
+    num_ *= mult;
+    denom_ *= mult;
+    num_ -= denom_ / rhs.denom_ * rhs.num_;
+    redusing();
     return *this;
 }
 Rational& Rational::operator*=(const Rational& rhs) {
-    *this = *this * rhs;
+    num_ *= rhs.num_;
+    denom_ *= rhs.denom_;
+    redusing();
     return *this;
 }
 Rational& Rational::operator/=(const Rational& rhs) {
-    *this = *this / rhs;
+    if (rhs.IsZero()) {
+        throw std::invalid_argument("Divide by zero exception");
+    }
+    num_ *= rhs.denom_;
+    denom_ *= rhs.num_;
+    redusing();
     return *this;
 }
+
+Rational& Rational::operator++() {
+    *this += 1;
+    return *this;
+}
+Rational Rational::operator++(int) {
+    Rational tmp(*this);
+    ++(*this);
+    return tmp;
+}
+Rational& Rational::operator--() {
+    *this -= 1;
+    return *this;
+}
+Rational Rational::operator--(int) {
+    Rational tmp(*this);
+    --(*this);
+    return tmp;
+}
+
 Rational& Rational::operator%=(const Rational& rhs) {
     int32_t mult = rhs.denom_ / gcd(denom_, rhs.denom_);
     num_ *= mult;
@@ -124,75 +87,147 @@ Rational& Rational::operator%=(const Rational& rhs) {
     return *this;
 }
 
-
-
-
-bool Rational::operator<(const Rational& rhs) const {
-    return num_ * rhs.denom_ < rhs.num_ * denom_;
+bool Rational::IsPositive() const {
+    return num_ > 0;
 }
-bool Rational::operator>(const Rational& rhs) const {
-    return num_ * rhs.denom_ > rhs.num_ * denom_;
+bool Rational::IsZero() const {
+    return num_ == 0;
 }
-bool Rational::operator<=(const Rational& rhs) const {
-    return !(*this > rhs);
-}
-bool Rational::operator>=(const Rational& rhs) const {
-    return !(*this < rhs);
-}
-bool Rational::operator==(const Rational& rhs) const {
-    return num_ == rhs.num_ && denom_ == rhs.denom_;
-}
-bool Rational::operator!=(const Rational& rhs) const {
-    return !(*this == rhs);
+bool Rational::IsNegative() const {
+    return num_ < 0;
 }
 
-
-double Rational::toDouble() const {
-    return num_ / (double)denom_;
+std::ostream& operator<<(std::ostream& ostrm, const Rational& rhs) {
+    return rhs.WriteTo(ostrm);
+}
+std::istream& operator>>(std::istream& istrm, Rational& rhs) {
+    return rhs.ReadFrom(istrm);
 }
 
-Rational pow(Rational tmp) {
-    Rational temp = tmp * tmp;
-    return temp;
+Rational operator+(const Rational& rhs) {
+    return rhs;
+}
+Rational operator-(const Rational& rhs) {
+    Rational tmp;
+    tmp -= rhs;
+    return tmp;
+}
+
+Rational operator+(Rational lhs, const Rational& rhs) {
+    lhs += rhs;
+    return lhs;
+}
+Rational operator-(Rational lhs, const Rational& rhs) {
+    lhs -= rhs;
+    return lhs;
+}
+Rational operator*(Rational lhs, const Rational& rhs) {
+    lhs *= rhs;
+    return lhs;
+}
+Rational operator/(Rational lhs, const Rational& rhs) {
+    lhs /= rhs;
+    return lhs;
+}
+
+Rational operator+(Rational lhs, const int32_t& rhs) {
+    lhs += Rational(rhs);
+    return lhs;
+}
+Rational operator-(Rational lhs, const int32_t& rhs) {
+    lhs -= Rational(rhs);
+    return lhs;
+}
+Rational operator*(Rational lhs, const int32_t& rhs) {
+    lhs *= Rational(rhs);
+    return lhs;
+}
+Rational operator/(Rational lhs, const int32_t& rhs) {
+    lhs /= Rational(rhs);
+    return lhs;
+}
+
+Rational operator+(const int32_t& lhs, Rational rhs) {
+    rhs += lhs;
+    return rhs;
+}
+Rational operator-(const int32_t& lhs, Rational rhs) {
+    rhs -= lhs;
+    return -rhs;
+}
+Rational operator*(const int32_t& lhs, Rational rhs) {
+    rhs *= lhs;
+    return rhs;
+}
+Rational operator/(const int32_t& lhs, Rational rhs) {
+    rhs /= lhs;
+    return pow(rhs, -1);
+}
+
+
+Rational pow(Rational myRat, int32_t power) {
+    Rational answer(1);
+    if (power < 0) {
+        myRat = Rational(1, 1) / myRat;
+        power = -power;
+    }
+    while (power) {
+        if (power & 1) {
+            answer *= myRat;
+        }
+        myRat *= myRat;
+        power >>= 1;
+    }
+    return answer;
+}
+
+Rational operator%(const Rational& lhs, const Rational& rhs)
+{
+    Rational diff(lhs);
+    diff %= rhs;
+    return lhs;
+}
+
+bool operator==(const Rational& lhs, const Rational& rhs) {
+    Rational diff = lhs - rhs;
+    return diff.IsZero();
+}
+bool operator>(const Rational& lhs, const Rational& rhs) {
+    Rational diff = lhs - rhs;
+    return diff.Rational::IsPositive();
+}
+bool operator<(const Rational& lhs, const Rational& rhs) {
+    Rational diff = lhs - rhs;
+    return diff.Rational::IsNegative();
+}
+bool operator!=(const Rational& lhs, const Rational& rhs) {
+    return !operator==(lhs, rhs);
+}
+bool operator<=(const Rational& lhs, const Rational& rhs) {
+    return !operator>(lhs, rhs);
+}
+bool operator>=(const Rational& lhs, const Rational& rhs) {
+    return !operator<(lhs, rhs);
+}
+
+int32_t Rational::gcd(int32_t a, int32_t b) const {
+    while (a != 0) {
+        if (a < b) {
+            std::swap(a, b);
+        }
+        a %= b;
+    }
+    return b;
 }
 
 void Rational::redusing() {
-    if (num_ < 0) {
-        int32_t g = gcd(-num_, denom_);
-    }
-    else {
-        int32_t g = gcd(num_, denom_);
-    }
+    int32_t dev = gcd(std::abs(num_), denom_);
+    num_ /= dev;
+    denom_ /= dev;
 }
 
-int32_t Rational::gcd(int32_t num_, int32_t denom_) const {
-    if (num_ < denom_) {
-        std::swap(num_, denom_);
-    }
-    num_ %= denom_;
-    if (num_ == 0) {
-        return denom_;
-    }
-    else {
-        return gcd(num_, denom_);
-    }
-}
-
-
-Rational Rational::normalize(Rational& rhs) const {
-    int32_t a, b;
-    a = std::abs(rhs.num_); 
-    b = std::abs(rhs.denom_);
-    while(b){
-        a %= b;
-        std::swap(a, b);
-    }
-    return Rational(rhs.num_ / a, rhs.denom_ / a);
-}
-
-
-
-std::ostream& Rational::WriteTo(std::ostream& ostrm) const noexcept {
+std::ostream& Rational::WriteTo(std::ostream& ostrm) const noexcept
+{
     ostrm << num_ << separator << denom_;
     return ostrm;
 }

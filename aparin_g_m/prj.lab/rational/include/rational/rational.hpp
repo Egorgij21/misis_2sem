@@ -19,49 +19,30 @@ static const char separator = '/' ;
 
 public:
     Rational();
-    Rational(const int32_t) noexcept;
+    Rational(const int32_t num_input) noexcept;
     Rational(const Rational&) = default;
     Rational(Rational&&) = default;
     Rational(const int32_t num_input, const int32_t denom_input);
     ~Rational() = default;
 
-
+    Rational& operator=(const Rational& rhs);
+    Rational& operator+=(const Rational& rhs);
+    Rational& operator-=(const Rational& rhs);
+    Rational& operator*=(const Rational& rhs);
+    Rational& operator/=(const Rational& rhs);
+    Rational& operator%=(const Rational& rhs);
 
     std::ostream& WriteTo(std::ostream&) const noexcept;
 	std::istream& ReadFrom(std::istream&);
 
-
-
-    Rational& operator=(const Rational&);
-
-
-    Rational operator+(const Rational&) const;
-    Rational operator+() const;
-    Rational operator-(const Rational&) const;
-    Rational operator-() const;
-    Rational operator*(const Rational&) const;
-    Rational operator/(const Rational&) const;
-
-
-    Rational operator++();
+    Rational& operator++();
     Rational operator++(int);
-	Rational operator--();
+    Rational& operator--();
     Rational operator--(int);
 
-
-    Rational& operator+=(const Rational&);
-    Rational& operator-=(const Rational&);
-    Rational& operator*=(const Rational&);
-    Rational& operator/=(const Rational&);
-    Rational& operator%=(const Rational&);
-
-
-    bool operator<(const Rational&) const;
-    bool operator>(const Rational&) const;
-    bool operator<=(const Rational&) const;
-    bool operator>=(const Rational&) const;
-    bool operator==(const Rational&) const;
-    bool operator!=(const Rational&) const;
+    bool IsPositive() const;
+    bool IsZero() const;
+    bool IsNegative() const;
 
 
     double toDouble() const;
@@ -71,6 +52,27 @@ private:
     Rational normalize(Rational&) const;
 };
 
-Rational pow(Rational);
+
+Rational operator+(const Rational& rhs);
+Rational operator-(const Rational& rhs);
+
+Rational operator+(Rational lhs, const Rational& rhs);
+Rational operator-(Rational lhs, const Rational& rhs);
+Rational operator*(Rational lhs, const Rational& rhs);
+Rational operator/(Rational lhs, const Rational& rhs);
+
+
+Rational pow(Rational Rat, int32_t power);
+
+
+Rational operator%(const Rational& lhs, const Rational& rhs);
+
+bool operator==(const Rational& lhs, const Rational& rhs);
+bool operator>(const Rational& lhs, const Rational& rhs);
+bool operator<(const Rational& lhs, const Rational& rhs);
+bool operator!=(const Rational& lhs, const Rational& rhs);
+bool operator<=(const Rational& lhs, const Rational& rhs);
+bool operator>=(const Rational& lhs, const Rational& rhs);
+
 
 #endif

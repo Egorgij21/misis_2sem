@@ -24,10 +24,6 @@ TEST_CASE("checking arithmetic") {
 }
 
 
-TEST_CASE("check custom"){
-    CHECK(pow(Rational(3, 7)) == Rational(-9, -49));
-}
-
 bool less = false;
 bool equal = false;
 bool bigger = true;

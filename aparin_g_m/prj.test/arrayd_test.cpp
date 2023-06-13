@@ -1,24 +1,23 @@
 #define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
-
-#include <arrayd/arrayd.hpp>
-
 #include <doctest/doctest.h>
 
+#include <arrayd/arrayd.hpp>
+#include <iostream>
 
-int len_a = 5;
-ArrayD a(len_a);
 
 
-TEST_CASE("checking") {
-    CHECK(a.ssize() == len_a);
-    a.resize(len_a + 2);
-    CHECK(a.ssize() == len_a + 2);
-    for(int i = 0; i < a.ssize(); i++) {
-        a.insert(i, i*i);
-    }
+
+TEST_CASE("[arrayd] - ArrayD size & capacity") {
+    ArrayD a(1);
+    CHECK(a[0] == 0);
+    a.insert(2, 2);
+    CHECK(a[2] == 2);
+    a.insert(1, 3);
+    CHECK(a[1] == 3);
+    CHECK(a[2] == 1);
+    CHECK(a[2] == 1);
+    a.remove(0);
     CHECK(a[1] == 1);
-    CHECK(a[2] == 4);
-    CHECK(a[3] == 9);
 }
 
 
