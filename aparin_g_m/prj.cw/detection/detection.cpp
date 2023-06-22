@@ -238,9 +238,9 @@ void VideoCutter::cut(float threshold, FilterType filterType, int kernelSize, fl
         double startFrame = timecodes[i];
         double endFrame = timecodes[i + 1];
         std::stringstream segmentPathStream;
-        segmentPathStream << destPathPrefix << segmentIndex++ << ".avi";
+        segmentPathStream << destPathPrefix << segmentIndex++ << ".mp4";
         std::string segmentPath = segmentPathStream.str();
-        cv::VideoWriter writer(segmentPath, cv::VideoWriter::fourcc('M', 'J', 'P', 'G'), fps, cv::Size(frameWidth, frameHeight), true);
+        cv::VideoWriter writer(segmentPath, cv::VideoWriter::fourcc('H', '2', '6', '4'), fps, cv::Size(frameWidth, frameHeight), true);
         for (int j = startFrame; j <= endFrame; j++) {
             cv::Mat frame;
             videoCapture.set(cv::CAP_PROP_POS_FRAMES, j);

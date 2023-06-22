@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.12)
+cmake_minimum_required(VERSION 3.18)
 project(MyProject)
 
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
@@ -13,10 +13,68 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_DEBUG ${CMAKE_CURRENT_SOURCE_DIR}/bin.dbg)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_RELEASE ${CMAKE_CURRENT_SOURCE_DIR}/bin.rel)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_RELWITHDEBINFO ${CMAKE_CURRENT_SOURCE_DIR}/bin.relwithdbg)
 
-# set your path to vcpkg.cmake here
-set(CMAKE_TOOLCHAIN_FILE Users/egorgij21/vcpkg/scripts/buildsystems/vcpkg.cmake CACHE STRING "Vcpkg toolchain file")
+set(CMAKE_TOOLCHAIN_FILE ${CMAKE_CURRENT_SOURCE_DIR}/vcpkg/scripts/buildsystems/vcpkg.cmake CACHE STRING "Vcpkg toolchain file" -G Ninja)
 
 find_package(OpenCV REQUIRED CONFIG COMPONENTS core highgui imgproc)
 
 add_subdirectory(detection)
 add_subdirectory(test)
+
+# first we can indicate the documentation build as an option and set it to ON by default
+option(BUILD_DOC "Build documentation" ON)
+
+# check if Doxygen is installed
+find_package(Doxygen)
+if (DOXYGEN_FOUND)
+    # set input and output files
+    set(DOXYGEN_IN ${CMAKE_CURRENT_SOURCE_DIR}/Doxyfile)
+    set(DOXYGEN_OUT ${CMAKE_CURRENT_SOURCE_DIR}/Doxyfile)
+    # request to configure the file
+    configure_file(${DOXYGEN_IN} ${DOXYGEN_OUT} @ONLY)
+    message("Doxygen build started")
+
+    # note the option ALL which allows to build the docs together with the application
+    add_custom_target( doc_doxygen ALL
+        COMMAND ${DOXYGEN_EXECUTABLE} ${DOXYGEN_OUT}
+        WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+        COMMENT "Generating API documentation with Doxygen"
+        VERBATIM )
+else (DOXYGEN_FOUND)
+  message("Doxygen need to be installed to generate the doxygen documentation")
+endif (DOXYGEN_FOUND)
+
+
+if(WIN32)
+    set(OpenCV_RUNTIME_PATH "${OpenCV_DIR}/../../bin")
+else()
+    set(OpenCV_RUNTIME_PATH "${OpenCV_DIR}/../../lib")
+endif()
+
+if(INSTALL_TARGET)
+    install(DIRECTORY "${OpenCV_RUNTIME_PATH}/"
+      DESTINATION bin
+      FILES_MATCHING PATTERN "*opencv_core*"
+    )
+    install(DIRECTORY "${OpenCV_RUNTIME_PATH}/"
+      DESTINATION bin
+      FILES_MATCHING PATTERN "*opencv_highgui*"
+    )
+    install(DIRECTORY "${OpenCV_RUNTIME_PATH}/"
+      DESTINATION bin
+      FILES_MATCHING PATTERN "*opencv_imgproc*"
+    )
+endif()
+
+install(TARGETS filter ctikz  DESTINATION bin)
+
+install(DIRECTORY filter/include/ DESTINATION include/filter)
+install(DIRECTORY ctikz/include/ DESTINATION include/ctikz)
+install(FILES filter/filter.cpp DESTINATION filter)
+install(FILES ctikz/ctikz.cpp DESTINATION ctikz)
+install(TARGETS example DESTINATION bin)
+install(DIRECTORY example/ DESTINATION bin/)
+install(DIRECTORY cmake/ DESTINATION .)
+
+
+install(FILES ctikz/include/ctikz/ctikz.hpp DESTINATION include/ctikz)
+install(FILES CMakeLists.txt filter/CMakeLists.txt example/CMakeLists.txt ctikz/CMakeLists.txt DESTINATION .)

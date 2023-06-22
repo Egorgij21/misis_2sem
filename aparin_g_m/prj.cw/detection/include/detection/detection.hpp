@@ -54,7 +54,6 @@ class VideoCutter {
 public:
     VideoCutter(const std::string &srcPath, const std::string &destDir);
     void cut(float threshold, FilterType filterType, int kernelSize = 1, float arg1 = 0.0, float arg2 = 0.0);
-
 private:
     std::string srcPath;
     std::string destDir;
