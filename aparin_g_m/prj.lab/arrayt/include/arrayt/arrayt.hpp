@@ -60,7 +60,7 @@ ArrayT<T>::ArrayT(std::ptrdiff_t size) {
 
 
 template<typename T>
-ArrayT<T>::ArrayT(const ArrayT<T>& arr) : ssize_(arr.size_), capacity_(arr.capacity_), data_(nullptr) {
+ArrayT<T>::ArrayT(const ArrayT<T>& arr) : size_(arr.size_), capacity_(arr.capacity_), data_(nullptr) {
     if (this == &arr) {
         return;
     }
