@@ -3,6 +3,7 @@
 #include <iostream>
 #include <vector>
 #include <sstream>
+#include <filesystem>
 
 
 
@@ -232,6 +233,15 @@ void VideoCutter::cut(float threshold, FilterType filterType, int kernelSize, fl
     int frameWidth = static_cast<int>(videoCapture.get(cv::CAP_PROP_FRAME_WIDTH));
     int frameHeight = static_cast<int>(videoCapture.get(cv::CAP_PROP_FRAME_HEIGHT));
     double fps = videoCapture.get(cv::CAP_PROP_FPS);
+
+    if (!std::filesystem::exists(destDir)) {
+        std::filesystem::create_directory(destDir);
+        std::cerr << "Directory created!" << std::endl;
+    } 
+    else {
+        std::cerr << "Directory already exists!" << std::endl;
+    }
+
     std::string destPathPrefix = destDir + "/segment";
     int segmentIndex = 1;
     for (int i = 0; i < timecodes.size() - 1; i++) {
